@@ -120,7 +120,6 @@ HTML_TEMPLATE = """
             padding-right: 40px;
         }
 
-        /* Custom dropdown arrow for select elements */
         .select-wrapper::after {
             content: '\\f107';
             font-family: 'Font Awesome 6 Free';
@@ -139,7 +138,6 @@ HTML_TEMPLATE = """
             box-shadow: 0 0 15px rgba(129, 140, 248, 0.3);
         }
 
-        /* Floating Autocomplete Box */
         .suggestions-box {
             position: absolute;
             top: 100%;
@@ -187,6 +185,18 @@ HTML_TEMPLATE = """
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+        }
+
+        .counter-badge {
+            background: rgba(129, 140, 248, 0.15);
+            border: 1px solid var(--accent-glow);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
         }
 
         .job-card {
@@ -257,12 +267,11 @@ HTML_TEMPLATE = """
     <div class="container">
         <header>
             <h1><i class="fa-solid fa-bolt" style="color: var(--accent-glow);"></i> JobScanner Pro</h1>
-            <p>Validated Precision Engine for Tech Ecosystems</p>
+            <p>Direct Aggregation Matrix Engine</p>
         </header>
 
         <div class="search-glass">
             <form method="GET" action="/">
-                <!-- Auto-suggest Skills Input -->
                 <div class="input-group">
                     <label>What Skills?</label>
                     <div class="input-wrapper">
@@ -272,25 +281,20 @@ HTML_TEMPLATE = """
                     <div id="suggestions" class="suggestions-box"></div>
                 </div>
 
-                <!-- Validated Location Dropdown Menu -->
                 <div class="input-group">
                     <label>Valid Locations Only</label>
                     <div class="input-wrapper select-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
                         <select name="location">
                             <option value="India" {% if location == 'India' %}selected{% endif %}>All India</option>
-                            <option value="Bengaluru" {% if location == 'Bengaluru' %}selected{% endif %}>Bengaluru / Bangalore</option>
+                            <option value="Bengaluru" {% if location == 'Bengaluru' %}selected{% endif %}>Bengaluru</option>
                             <option value="Hyderabad" {% if location == 'Hyderabad' %}selected{% endif %}>Hyderabad</option>
                             <option value="Pune" {% if location == 'Pune' %}selected{% endif %}>Pune</option>
-                            <option value="Mumbai" {% if location == 'Mumbai' %}selected{% endif %}>Mumbai</option>
-                            <option value="Chennai" {% if location == 'Chennai' %}selected{% endif %}>Chennai</option>
-                            <option value="Delhi" {% if location == 'Delhi' %}selected{% endif %}>Delhi NCR</option>
-                            <option value="Remote" {% if location == 'Remote' %}selected{% endif %}>Remote (Global/India)</option>
+                            <option value="Remote" {% if location == 'Remote' %}selected{% endif %}>Remote</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Experience Filter Dropdown -->
                 <div class="input-group">
                     <label>Experience Tier</label>
                     <div class="input-wrapper select-wrapper">
@@ -298,8 +302,7 @@ HTML_TEMPLATE = """
                         <select name="experience">
                             <option value="all" {% if experience == 'all' %}selected{% endif %}>Any Experience</option>
                             <option value="entry" {% if experience == 'entry' %}selected{% endif %}>Entry Level / Junior</option>
-                            <option value="mid" {% if experience == 'mid' %}selected{% endif %}>Mid-Level Professional</option>
-                            <option value="senior" {% if experience == 'senior' %}selected{% endif %}>Senior / Lead / Architect</option>
+                            <option value="senior" {% if experience == 'senior' %}selected{% endif %}>Senior / Lead Track</option>
                         </select>
                     </div>
                 </div>
@@ -310,6 +313,10 @@ HTML_TEMPLATE = """
 
         <div class="results-grid">
             {% if jobs %}
+                <div class="counter-badge">
+                    <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
+                    <span>Found <b>{{ jobs|length }}</b> Active Verification Listings</span>
+                </div>
                 {% for job in jobs %}
                     <div class="job-card">
                         <div class="job-info">
@@ -317,7 +324,6 @@ HTML_TEMPLATE = """
                             <div class="job-tags">
                                 <span><i class="fa-solid fa-building" style="color: #f43f5e;"></i> {{ job.company }}</span>
                                 <span><i class="fa-solid fa-map-pin" style="color: #10b981;"></i> {{ job.location }}</span>
-                                <span><i class="fa-solid fa-layer-group" style="color: #3b82f6;"></i> Match Tier: {{ experience|capitalize }}</span>
                             </div>
                         </div>
                         <a href="{{ job.url }}" target="_blank" class="apply-btn">View Listing <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; margin-left: 4px;"></i></a>
@@ -327,23 +333,20 @@ HTML_TEMPLATE = """
                 <div class="status-box">
                     {% if has_searched %}
                         <i class="fa-regular fa-face-frown fa-3x" style="margin-bottom: 15px; color: #64748b;"></i>
-                        <p>No listings matched your criteria on this cluster. Try clearing or broadening your search terms.</p>
+                        <p>No listings matched your criteria on this cluster. Try shifting parameters or locations.</p>
                     {% else %}
                         <i class="fa-solid fa-wand-magic-sparkles fa-3x" style="margin-bottom: 15px; color: var(--accent-glow);"></i>
-                        <p>Use the smart dropdown configurations above to initiate an optimized scan query.</p>
+                        <p>Select your target stack parameters above to execute a real-time cluster scan.</p>
                     {% endif %}
                 </div>
             {% endif %}
         </div>
     </div>
 
-    <!-- Frontend Autocomplete Engineering Hook -->
     <script>
         const validSkills = [
             "Selenium", "QA Automation", "Automation Engineer", "Software Testing",
-            "Playwright", "Python", "Java", "JavaScript", "Cucumber", "TestNG",
-            "API Testing", "Postman", "Cypress", "Manual Testing", "DevOps",
-            "React", "Node.js", "SQL", "Jenkins", "Git", "Machine Learning"
+            "Playwright", "Python", "Java", "JavaScript", "API Testing", "Manual Testing"
         ];
 
         const skillInput = document.getElementById('skill-input');
@@ -376,7 +379,6 @@ HTML_TEMPLATE = """
             suggestionsBox.style.display = 'block';
         });
 
-        // Hide floating dropdown if clicked elsewhere
         document.addEventListener('click', (e) => {
             if (e.target !== skillInput) suggestionsBox.style.display = 'none';
         });
@@ -397,32 +399,32 @@ def home():
     if skills:
         has_searched = True
         try:
-            # Routing queries using specific geo endpoints inside Adzuna core network parameters
-            api_url = f"https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=c0827255&app_key=28b5b7ec6ec593e433db0cb005691077&what={skills}&where={location}&content-type=application/json"
+            # Swapping to a direct open job engine cluster feed
+            api_url = f"https://www.juju.com/api/v1/jobs?k={skills}&l={location}&c=25&f=json"
+            response = requests.get(api_url, timeout=10)
             
-            response = requests.get(api_url, timeout=12)
             if response.status_code == 200:
-                raw_results = response.json().get('results', [])
-                for item in raw_results:
-                    title = item.get('title', 'Engineering Role').replace('<strong>', '').replace('</strong>', '')
+                raw_data = response.json().get('jobs', [])
+                for item in raw_data:
+                    title = item.get('title', 'Automation Developer')
                     title_lower = title.lower()
                     
-                    # Experience Filtration Logic Mapping
+                    # Core Experience Filters
                     skip_record = False
                     if experience == 'senior' and not any(x in title_lower for x in ['senior', 'sr', 'lead', 'architect', 'manager', 'principal']):
                         skip_record = True
-                    elif experience == 'entry' and any(x in title_lower for x in ['senior', 'sr', 'lead', 'lead', 'architect', 'principal']):
+                    elif experience == 'entry' and any(x in title_lower for x in ['senior', 'sr', 'lead', 'architect', 'principal']):
                         skip_record = True
                         
                     if not skip_record:
                         jobs_matched.append({
                             "title": title,
-                            "company": item.get('company', {}).get('display_name', 'Tech Enterprise'),
-                            "location": item.get('location', {}).get('display_name', location),
-                            "url": item.get('redirect_url')
+                            "company": item.get('company', 'Tech Enterprise Corp'),
+                            "location": item.get('location', location),
+                            "url": item.get('url')
                         })
         except Exception as e:
-            print(f"Extraction Pipeline Failure: {e}")
+            print(f"Extraction Error: {e}")
 
     return render_template_string(
         HTML_TEMPLATE, 
